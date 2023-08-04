@@ -1,0 +1,106 @@
+(1) Why is sizeof(a) / sizeof(a[0]) superior to using sizeof(a) / sizeof(t) where t
+    is the type stored in the array?
+
+    Using the sizeof operator on an index of the array is more portable. Using option 1, if I change the type,
+    I only need to change the type where the array is declared and I will still get the correct array size.
+
+
+(2) Describe how to use a digit in character form as a subscript.
+
+    '0' - '9' represents a range of 10 unique symbols, mapped to some int value. If we subtract '0' from
+    our digit, we can get mapped to an int value that ranges from 0-9. This works as long as '0' - '9' is
+    sequential in the character set being used.
+
+    e.g. ['8' - '0'] = \010 = 8
+
+
+(3) Write a declaration of an array named weekend contain seven bool values. Include and initializer that makes
+    the first and last values true; all the other values should be false.
+
+    bool weekend[7] = {true, false, false, false, false, false, true};
+    book weekend[] = {true, false, false, false, false, false, true};
+
+
+(4) Repeat exercise 3, but this time use a designated initializer. Make it as short as possible.
+
+    bool weekend[7] = {true, [6] = true};
+    book weekend[] = {true, [6] = true};
+
+
+(5) Write a program fragment that generates the first 40 fibonacci numbers:
+
+    int fib[40] = {0, 1};
+
+    for (int i = 2; i < ((int)(sizeof(fib) / sizeof(fib[0])); i++) {
+        fib[i] = fib[i-2] + fib[i-1];
+    }
+
+    return 0;
+
+
+(6) const int segments [10][7] = {{1, 1, 1, 1, 1, 1, 0}, {0, 1, 1, 0, 0, 0, 0}, 
+                                  {1, 1, 0, 1, 1, 0, 1}, {1, 1, 1, 1, 0, 0, 1},
+                                  {0, 1, 1, 0, 0, 1, 1}, {1, 0, 1, 1, 0, 1, 1},
+                                  {1, 0, 1, 1, 1, 1, 1}, {1, 1, 1, 0, 0, 0, 0},
+                                  {1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 0, 1, 1}}
+
+(7) const int segments [10][7] = {{1, 1, 1, 1, 1, 1}, {0, 1, 1}, 
+                                  {1, 1, 0, 1, 1, 0, 1}, {1, 1, 1, 1, 0, 0, 1},
+                                  {0, 1, 1, 0, 0, 1, 1}, {1, 0, 1, 1, 0, 1, 1},
+                                  {1, 0, 1, 1, 1, 1, 1}, {1, 1, 1},
+                                  {1, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 0, 1, 1}}
+
+
+(8) Write a declaration for a 2d array nammed temperature_readings that stores one month of hourly
+    temperature readings (assume 30 days in the month). Rows should represent days and columns should
+    represent the hours of the day.
+
+    float temperature_readings[30][24] = {0};
+
+
+(9) Write a program fragment that use the array from exercise 8 to compute the average temp for the month.
+    
+    float avg; 
+    float sum = 0;
+    int size = (int)(sizeof(temperature_readings[0]) / sizeof(temperature_readings[0][0]);
+    
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j {
+            sum += temperature_readings[i][j];
+        }
+    }
+
+    avg = sum / (size * 30);
+
+    return 0;
+
+
+(10) char chess[8][8] = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
+                         {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                         {0},
+                         {0},
+                         {0},
+                         {0},
+                         {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
+                         {'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'}}
+
+
+(11) Write a program that declares an 8x8 char array named checker_board and then uses a loop to store
+     the data into the array (one char per array element).
+
+     char checker_board[8][8];
+     int ROWS=8;
+     int COLS=8;
+
+     for (int i = 0; i < ROWS; ++i) {
+         for (int j = 0; j < COLS; ++j) {
+             if ((i + j) % 2 == 0) {
+                 checker_board[i][j] = 'B';
+             } else {
+                 checker_board[i][j] = 'R';
+             }
+         }
+     }
+
+
+
