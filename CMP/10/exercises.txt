@@ -1,0 +1,78 @@
+(1) The follow program outline shows only f'n definitions and variable declarations.
+
+int a;
+
+void f(int b) {
+    int c;
+}
+
+void g(void) {
+    int d;
+    {
+        int e;
+    }
+}
+
+int main(void) {
+    int f;
+}
+
+For each of the following scopes, list all variables and parameter names visible in that scope.
+(a) The f function:
+    --> a, b, c
+
+(b) The g function:
+    --> a, d (e cannot be referenced outside of it's block scope that nested in g)
+
+(c) The block in which 'e' is declared:
+    --> a, d, e
+
+(d) The main function:
+    --> a, f
+
+
+
+
+(2) The following program outline shows only function definitions and variable declarations:
+
+int b, c;
+
+void f(void) {
+    int b, d;
+}
+
+void g(int a) {
+    int c;
+    {
+        int a, d;
+    }
+}
+
+int main(void) {
+    int c, d;
+}
+
+For each of the following scopes, list all variables and parameter names visible in that scope. If there is more than
+one variable or parameter with the same name, indicate which one is visible.
+(a) The f function:
+    --> c, local b, d 
+
+(b) The g function:
+    --> a, global b, local c
+
+(c) The block in which 'a' and 'd' are declared:
+    --> a, global b, function c, d
+
+(d) The main function:
+    --> global b, local c, d
+
+
+
+(3) Suppose that a program has only 1 function (main). How many different variables named i could this program contain?
+
+    --> 1 for global scope
+    --> 1 for main function scope
+    --> theoretically infinite variables for i for block scopes that can be in main...
+        within if statements, loops, and general blocks
+
+    So my answer is infinity + 2
