@@ -142,14 +142,14 @@
 
 (10) Modify the find_middle function of section 11.5 so that it uses pointer arithmetic to calculate the return value.
 
-    int* find_middle(int a[], int n) {
+     int* find_middle(int a[], int n) {
         return a+(n/2);
-    }
+     }
 
 
 (11) Modify the find_largest function so that it uses pointer arithmetic to calculate the return.
 
-    int find_largest(int a[], int n) {
+     int find_largest(int a[], int n) {
         int max, *p;
         max = *a;
         
@@ -159,11 +159,12 @@
         }
 
         return max;
+     }
 
         
 (12) Write the following function:
     
-    void find_two_largest(const int *a, int n, int *largest, int *second_largest) {
+     void find_two_largest(const int *a, int n, int *largest, int *second_largest) {
         int *p;
 
         for (p = a; p < a + n; p++) {
@@ -172,7 +173,7 @@
                 *largest = *p;
             else if (*p > *second_largest)
                 *second_largest = *p;
-    }
+     }
 
 
 (13)  SKIP
@@ -185,6 +186,70 @@
 
      Write a statement that uses the search function (from exercise 7) to search the entire temperatures array for the value 32.
 
+     for (p = temperatures; p < temperatures + 7; p++ ) {
+         search(*p, 24, 32);
+     }
 
-     for (p = temperatures[0]; p < 
-    
+
+(15) Write a loop that prints all temperature readings stored in row i of the temperatures array. Use a pointer to visit each
+     element of the array.
+
+     for (p = temperatures[i]; p < temperatures[i] + 24; p++) {
+         printf("%d ", *p);
+     }
+
+     for (p = *(temperatures + i); p < *(temperatures + i) + 24; p++) {
+         printf("%d ", *p);
+     }
+
+
+(16) Write a loop that prints the highest temperature in the temperatures array (see exercise 14) for each day of the week. The
+     loop body should call the find_largest function, passing it one row of the array at a time.
+
+     for (p = temperatures; p < temperatures + 7; p++) {
+         printf("%d ", find_largest(*p, 24));
+     }
+
+     for (p = &temperatures[0]; p < &temperatures[0] + 7; p++) {
+         printf("%d ", find_largest(*p, 24));
+     }
+
+     for (p = &temperatures[0]; p < &temperatures[7]; p++) {
+         printf("%d ", find_largest(*p, 24));
+     }
+
+
+(17) int sum_two_dimensional_array(const int a[][LEN], int n) {
+        int sum, *p;
+
+        for (p = *a, p < *a + n * LEN; p++) {
+            sum += *p;
+        }
+
+        return sum;
+     }
+
+
+     int sum_two_dimensional_array(const int a[][LEN], int n) {
+        int sum, *p;
+
+        for (p = &a[0][0], p <= &a[n-1][LEN-1]; p++) {
+            sum += *p;
+        }
+
+        return sum;
+     }
+
+
+     int sum_two_dimensional_array(const int a[][LEN], int n) {
+        int sum, *p;
+
+        for (p = *(a + 0), p < *(a + n) + LEN; p++) {
+            sum += *p;
+        }
+
+        return sum;
+     }
+
+
+(18) SKIP
