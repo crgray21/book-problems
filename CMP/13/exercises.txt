@@ -1,0 +1,258 @@
+(1) The following function calls supposedly write a single new-line character, but some are incorrect. Identify which calls don't work and explain why.
+    (a) printf("%c", '\n'); --> this is fine
+    (b) printf("%c", "\n"); --> "\n" is not a char, it is of type char*
+    (c) printf("%s", '\n'); --> '\n' is not of type char*, it is type char
+    (d) printf("%s", "\n"); --> this is fine
+    (e) printf('\n');  --> printf() expects a char*, not char 
+    (f) printf("\n");  --> this is fine
+    (g) putchar('\n'); --> this is fine
+    (h) putchar("\n"); --> putchar() expects a int, not char*
+    (i) puts('\n'); --> puts() expects type char*, not char
+    (j) puts("\n"); --> this is fine
+    (k) puts("");   --> this is fine
+
+
+(2) Suppose that p has been declared as follows: 
+
+    char *p = "abc";
+
+    Which of the following function calls are legal? Show the output produced by each legal call, and explain why the others are illegal.
+
+    (a) putchar(p);  --> putchar expects an integer, p is a pointer to a character
+    (b) putchar(*p); --> output would be 'a', *p == p[0], the * dereferences the pointer, resulting in the character value, 'a'.
+    (c) puts(p)      --> output would be 'abc', puts() expects a pointer to a string, and then outputs the string with a new-line character '\n'.
+    (d) puts(*p)     --> puts() expects a char* pointer, *p is a character
+
+
+(3) Suppose that we call scanf() as follows:
+
+    scanf("%d%s%d", &i, s, &j);
+
+    If the user enters 12abc34 56def78, what will be the values of i, s, and j after the call (Assume that i and j are int variables and s is an array of chars).
+
+    i == 12; s == "abc34\0"; j == 56;
+
+
+(4) Modify the read_line function in each of the following ways:
+    (a) Have it skip white space before beginning to store input characters.
+    (b) Have it stop reading at the first white-space character. Hint: To determine whether or not a char is white space, call the isspace() function.
+    (c) Have it stop reading at the first new-line character, then store the new-line character in the string.
+    (d) Have it leave behind characters that it doesn't have room to store.
+
+    void read_line(char *s, int n) {
+        int c, i = 0;
+
+        while(isspace(c = getchar())) {
+            ;
+        }
+
+        while ((c != '\n' && !(isspace(c)) && i < n - 1) {
+            s[i++] = c; 
+            c = getchar();
+        }
+
+        if (c == '\n' && i < n - 1)
+            s[i++] = '\n';
+        
+        s[i] = '\0';
+    }
+
+
+(5) Write a function named capitalize() that capitalizes all letters in its argument. The argument will be a null-terminated string containing arbitrary
+    characters, not just letters. Use array subscripting to access the chars in the string. Hint: Use the toupper function to convert each to character to
+    upper-case.
+
+    (b) Rewrite the capitalize() function, this time use pointer arithmetic to access the characters in the string.
+
+    
+    void capitalize(char s[]) {
+        for (int i = 0; s[i] != '\0'; i++) {
+            toupper(s[i]);
+        }
+    }
+
+    void capitalize(char *s) {
+       while(*s++)
+           toupper(*s);
+    }
+
+
+(6) Write a function named censor() that modifies a string by replacing every occurrence of 'foo' with 'xxx'. For example, the string "food fool" would become
+    "xxxd xxxl". Make the function as short as possible without sacrificing clarity.
+
+    void censor(char *s, char *censor) {
+        int censored = 0;
+        int len = strlen(censor)
+       
+        while (*s) {
+            if (*s != *censor) {
+                s++;
+                continue;
+            }
+
+            for (int i = 0; i < len; *(s + i) != '\0'; i++){
+                if (i == len - 1 && censor[i] == *(s + i))
+                   censored = 1; 
+            }
+
+            if (censored) {
+                for (int i = 0; i < len; i++)
+                    *(s + i) = 'x';
+                s += len;
+                censored = 0;
+                continue;
+
+            s++;
+        }
+
+    }
+
+
+(7) Suppose that str is an array of characters. Which one of the following statements is not equivalent to the other three?
+    (a) *str = 0;
+    (b) str[0] = '\0';
+    (c) strcpy(str, "");
+    (d) strcat(str, ""); --> strcat is slightly different than the others, since it will append the null character to the end of str, while the others set the first element of str to '\0'.
+
+
+(8) What will be the value of string str after the following statements have been executed?
+    strcpy(str, "tire-bouchon");
+    strcpy(&str[4], "d-or-wi");
+    strcat(str, "red?");
+
+    --> "tired-or-wired?"
+
+
+(9) What will be the value of the string s1 after the following statements have been executed?
+    strcpy(s1, "computer");
+    strcpy(s2, "science");
+    if (strcmp(s1, s2) < 0)
+        strcat(s1, s2);
+    else
+        strcat(s2, s1);
+    s1[strlen(s1) - 6] = '\0';
+
+    --> "computers\0cience"
+    --> "computers"
+
+
+(10) The following function supposedly creates an identical copy of a string. What's wrong with the function?
+
+     char *duplicate(const char *p) {
+         char *q;
+
+         strcpy(q, p);
+         return q;
+     }
+
+     --> (1) q is not an array with initialized buffer space that you can copy data to
+     --> (2) q doesn't even point to anything
+
+
+(11) Modify the strcmp() function from the Q&A section to use pointer arithmetic.
+
+     int strcmp(char *s, char *t) {
+         while (*s == *t) {  
+             if (*s == '\0')
+                 return 0;
+             *s++; *t++;
+         }
+
+         return *s - *t;
+     }
+
+
+(12) Write the following function:
+
+     void get_extension(const char *file_name, char *extension) {
+         while(*file_name++) {
+             if (*file_name == '.')
+                 strcpy(extension, file_name + 1);
+                 return;
+         
+         strcpy(extension, "");
+     }
+
+
+(13) Write the following function:
+
+     void build_index_url (const char *domain, char *index_url) {
+         strcpy(index_url, "http://www.");
+         strcat(index_url, domain);
+         strcat(index_url, "/index.html");
+     }
+
+
+(14) What does the following function print?
+
+     #include <stdio.h>
+
+     int main(void) {
+         char s[] = "Hsjodi", *p;
+
+         for (p = s; *p; p++)
+             --*p;
+         puts(s)
+         return 0;
+     }
+
+     --> Grinch
+
+
+(15) Let f be the following function:
+
+     int f(char *s, char *t) {
+         char *p1, *p2;
+
+         for (p1 = s; *p1; p1++) {
+             for (p2 = t; *p2; p2++)
+                 if (*p1 == *p2) break;
+             if (*p2 == '\0') break;
+         }
+         return p1 - s;
+     }
+
+
+     (a) What is the value of f("abcd", "babc")? --> 0
+     (b) What is the value of f("abcd", "bcd")?  --> 1
+     (c) In general, what value does f return when passed two string s and t? It returns the index of the first occurrence of a letter in p1 that is also in p2.
+
+
+(16) Use the techniques of Section 13.6 to condense the count_spaces() function of Section 13.4.
+
+     int count_spaces(const char *s) {
+         int count = 0;
+
+         while (*s++)
+             if (*s == ' ')
+                 count++;
+         return count;
+     }
+
+
+(17) Write the following function:
+
+     bool test_extension(const char *file_name, const char *extension) {
+         while (*file_name++ != '.') 
+             if (!(*file_name))
+                 return 0;
+         
+         while (*file_name)
+             if (toupper(*file_name) != toupper(*extension))
+                 return 0;
+             file_name++;
+             extension++;
+
+         return 1;
+     }
+
+
+(18) void remove_filename(char *url) {
+         while (*url)
+             if (*url == '/')
+                 if (*(url + 1) != '/')
+                     *url = '\0';
+                     return;
+             url++;
+     }
+
