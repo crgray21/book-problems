@@ -8,9 +8,9 @@ int read_line(char str[], int n);
 
 
 int main(void) {
-    char reminders[MAX_REMIND][MSG_LEN + 3];
-    char day_str[3], msg_str[MSG_LEN + 1];
-    int day, i, j, num_remind = 0;
+    char reminders[MAX_REMIND][MSG_LEN + 13];
+    char day_str[6], time_str[7], msg_str[MSG_LEN + 1];
+    int day, month, hour, minute, i, j, k, num_remind = 0;
 
     for(;;) {
         if (num_remind == MAX_REMIND) {
@@ -19,19 +19,38 @@ int main(void) {
         }
 
         printf("Enter day and reminder: ");
-        scanf("%2d", &day);
-        if (day == 0)
+        scanf("%02d/%02d", &month, &day);
+        if (day == 0 || month == 0)
             break;
-        sprintf(day_str, "%2d", day);
+        if (day < 0 || day > 31 || month < 0 || month > 12) {
+            printf("Invalid day and/or month provided. Please try again...\n");
+            continue;
+        }
+        sprintf(day_str, "%02d/%02d", month, day);
+
+        scanf("%02d:%02d", &hour, &minute);
+        if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+            printf("Invalid time provided. Please try again...\n");
+            continue;
+        }
+        sprintf(time_str, " %02d:%02d", hour, minute);
+
         read_line(msg_str, MSG_LEN);
 
-        for (i = 0; i < num_remind; i++)
-            if (strcmp(day_str, reminders[i]) < 0)
+        for (i = 0; i < num_remind; i++) {
+            if (strncmp(day_str, reminders[i], 2) == 0) {
+                if (strcmp(time_str + 1, reminders[i] + 3) < 0)
+                    break;
+            }
+            else if (strcmp(day_str, reminders[i]) < 0)
                 break;
+        }
+
         for (j = num_remind; j > i; j--)
             strcpy(reminders[j], reminders[j-1]);
 
         strcpy(reminders[i], day_str);
+        strcat(reminders[i], time_str);
         strcat(reminders[i], msg_str);
 
         num_remind++;
