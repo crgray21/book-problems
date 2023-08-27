@@ -1,2 +1,122 @@
-Ch. 14 Exercises
-08/25/23 ==> Ch 14. Reading
+(1) What are some of the advantages and disadvantages of splitting up your code into multiple source and header files?
+
+    (a) (1) Grouping related functions and variables into a single file can help with clarifying the structure of a program.
+        (2) Each source file can compiled separately, which can save time if the program is large and has frequent changes
+        (3) Functions are more easily used in other programs when grouped in separate files.
+
+    (b) (1) Following the trail of funtions calls when trying to read and understand code is more difficult.
+        (2) Tracking down where errors occur can become more difficult.
+        (3) Managing the compilation and changes of multiple files is more difficult.
+        (4) Requires more thought about structure and how to organize the program (also advantageous in some ways)
+        (5) Higher levels of abstraction always take more time to comprehend.
+
+
+(2) Which of the following should not be put in a header file? Why not?
+
+    (a) Function prototypes --> fine
+
+    (b) Function declarations --> fine, but protoypes are better if they're available in your version of C!
+
+    (c) Macro definitions --> fine, but we should guard them appropriately anyways in case they contain type defs
+                          --> macro defintions, function prototypes, and/or variable declarations are all fine to import mulitiple times
+
+    (d) Type definitions --> fine if guarded appropriately; not guarding against multiple inclusion WILL result in a compilation error
+
+
+(3) Would there be any problems with writing #include "file" instead of #include <file> if file is a system header?
+    
+    It should be. The C standard is vague, but when the file name is surrounded in quotations, the file "is searched for in an implementation
+    defined manner". If not found, then the file is searched for as if its name had been enclosed in <brackets>.
+
+
+(4) Assume that debug.h is a header file with the following contents:
+    
+    #ifdef DEBUG
+    #define PRINT_DEBUG(n) printf("Value of " #n ": %d\n", n)
+    #else
+    #define PRINT_DEBUG(n)
+    #endif
+
+    Let testdebug.c be the following source file:
+
+    #include <stdio.h>
+
+    #define DEBUG
+    #include "debug.h"
+
+    int main(void) {
+        int i = 1, j = 2, k = 3;
+
+    #ifdef DEBUG
+        printf("Output if DEBUG is defined:\n");
+    #else
+        printf("Output if DEBUG is not defined:\n");
+    #endif
+
+        PRINT_DEBUG(i);
+        PRINT_DEBUG(j);
+        PRINT_DEBUG(k);
+        PRINT_DEBUG(i + j);
+        PRINT_DEBUG(2 * i + j - k);
+
+        return 0;
+    }
+
+ (a) What is the output when the program is executed?
+     
+     Output if DEBUG is defined:
+     Value of i: 1
+     Value of j: 2
+     Value of k: 3
+     Value of i + j: 3
+     Value of 2 * i + j - k: 1
+
+ (b) What is the output if the #define directive is removed from testdebug.c?
+     
+     Output if DEBUG is not defined:
+     
+ (c) Explain why the output is different in parts (a) and (b).
+
+     DEBUG is not defined in part b, so when "debug.h" is imported,
+     PRINT_DEBUG(n) has a different macro definition, thus changing
+     the output result.
+
+ (d) Is it necessary for the DEBUG macro to be defined before debug.h is included
+     in order for PRINT_DEBUG to have the desired effect?
+
+     Yes because the include statement imports the code starting at the line (or line after?) the include
+     statement in the program so for the desired effect, DEBUG must be defined before importing debug.h. All the
+     PRINT_DEBUG macros will be replaced on the first scan, so even if there were more preprocessor scans, there
+     won't be any PRINT_DEBUG macros remaining to replace.
+
+
+(5) Suppose that a program consists of 3 source files - main.c, f1.c, and f2.c - plus two header files, f1.h and f2.h.
+    All 3 source files include f1.h, but only f1.c and f2.c include f2.h. Write a makefile for this program, assuming
+    that the compiler is gcc and that the executable file is to be named demo.
+
+    demo: main.o f1.o f2.o
+        gcc -o demo main.o f1.o f2.o
+
+    main.o: main.c f1.h
+        gcc -c main.c
+
+    f1.o: f1.c f1.h f2.h
+        gcc -c f1.c
+
+    f2.o: f2.c f1.h f2.h
+        gcc -c f2.c
+
+(6) The following program questions refer to the program described in Exercise 5.
+
+    (a) Which files need to be compiled when the program is built for the first time?
+    (b) If f1.c is changed after the program has been built, which files need to be recompiled?
+    (c) If f1.h is changed after the program has been built, which files need to be recompiled?
+    (d) If f2.h is changed after the program has been built, which files need to be recompiled?
+
+    (a) main.c, f1.c, f2.c
+    (b) f1.c
+    (c) main.c, f1.c, f2.c
+    (d) f1.c, f2.c
+
+
+
