@@ -106,6 +106,7 @@
     f2.o: f2.c f1.h f2.h
         gcc -c f2.c
 
+
 (6) The following program questions refer to the program described in Exercise 5.
 
     (a) Which files need to be compiled when the program is built for the first time?
