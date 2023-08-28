@@ -1,0 +1,321 @@
+(1) In the following declarations, the x and y structures have members named x and y:
+    
+    struct { int x, y; } x;
+    struct { int x, y; } y;
+
+    Are these legal on an individual basis? Could both declarations appear as shown in the program?
+    
+    Both structs are valid syntax. They also have different identifiers, which will cause 0 problems.
+    The x and y integers within the structs have their own scope/namespace, meaning they won't conflict
+    with the struct identifiers that are outside their scope.
+
+
+(2) (a) struct { double real, imaginary; } c1, c2, c3;
+
+    (b) struct {
+            double real;
+            double imaginary;
+        } c1 = {.real = 0.0, .imaginary = 1.0},
+          c2 = {1.0, 0.0),
+          c3;
+
+    (c) c1 = c2;
+
+    (d) c3.real = c1.real + c2.real;
+        c3.imaginary = c1.imaginary + c2.imaginary;
+
+
+(3) (a) struct complex { double real, imaginary; };
+
+    (b) struct complex c1, c2, c3;
+
+    (c) struct complex make_complex (double real, double imaginary) {
+            
+            struct complex c1;
+            c1.real = real;
+            c1.imaginary = imaginary;
+
+            return c1;
+        }
+
+    (d) struct complex add_complex (struct complex c1, struct complex c2) {
+            
+            struct complex c3;
+            c3.real = c1.real + c2.real;
+            c3.imaginary = c1.imaginary + c2.imaginary;
+
+            return c3;
+        }
+
+
+(4) (a) typdef struct { double real, imaginary; } complex;
+
+    (b) complex c1, c2, c3;
+
+    (c) complex make_complex (double real, double imaginary) {
+            
+            complex c1;
+            c1.real = real;
+            c1.imaginary = imaginary;
+
+            return c1;
+        }
+
+    (d) complex add_complex (complex c1, complex c2) {
+            
+            complex c3;
+            c3.real = c1.real + c2.real;
+            c3.imaginary = c1.imaginary + c2.imaginary;
+
+            return c3;
+        }
+            
+
+(5) (a) int day_of_year(struct date d) {
+            int months[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+            int day = 0;
+
+            if (d.year % 4 == 0) {
+                months[1] = 29;
+            }
+
+            while (int i = 0; i < d.month; i++) {
+                day += months[i]; 
+            }
+
+            day += d.day;
+            
+            return day; 
+            
+        }
+
+    (b) int compare_dates(struct date d1, struct date d2) {
+            days1 = d1.year * 365 + day_of_year(d1);
+            days2 = d2.year * 365 + day_of_year(d2);
+
+            if (days1 < days2) {
+                return -1;
+            }
+
+            if (days1 > days2) {
+                return 1;
+            }
+
+            return 0;
+            
+        }
+
+
+(6) struct time split_time(long total_seconds) {
+        struct time t1;
+
+        t1.seconds = total_seconds % 60;
+        total_seconds = total_seconds / 60;
+
+        t1.minutes = total_seconds % 60;
+        total_seconds = total_seconds / 60;
+
+        t1.hours = total_seconds;
+
+        return t1;
+    }
+
+
+(7) SKIP
+
+
+(8) (a) struct color {
+            int red;
+            int green;
+            int blue;
+        }; 
+
+    (a) const struct color MAGENTA = { .red = 255, .green = 0, .blue = 255 }; 
+    (b) const struct color MAGENTA = { .red = 255, .blue = 255};
+
+
+(9) struct color make_color(int red, int green, int blue) {
+        
+        int colors[3] = { red, green, blue };
+
+        for (int i = 0; i < 3; i++) {
+            if (colors[i] > 255)
+                colors[i] = 255;
+            else if (colors[i] < 0) 
+                colors[i] = 0;
+        }
+
+       return struct color { .red = colors[0], .green = colors[1], .blue = colors[2] };
+    }
+
+
+    (b) int getRed(struct color c) {
+            return c.red;
+        }
+
+
+    (c) bool equal_color(struct color color1, struct color color2) {
+            return (color1.red == color2.red && color1.green == color2.green && color1.blue == color2.blue);
+        }
+
+
+    (d) struct color brighter (struct color c) {
+            struct color c2;
+            int result;
+
+            if (c.red == 0 && c.green == 0 && c.blue == 0) {
+                return struct color { 3, 3, 3 };
+
+            if (c.red > 0 && c.red < 3)
+                c.red = 3;
+
+            if (c.green > 0 && c.red < 3)
+                c.green = 3;
+
+            if (c.blue > 0 && c.blue < 3)
+                c.blue = 3;
+
+            result = (int) (c.red / 0.7);
+            if (result > 255)
+                result = 255;
+            c2.red = result;
+
+            result = (int) (c.green / 0.7);
+            if (result > 255)
+                result = 255;
+            c2.green = result;
+
+            result = (int) (c.blue / 0.7);
+            if (result > 255)
+                result = 255;
+            c2.blue = result;
+
+            return c2;
+        }
+
+
+    (e) struct color darker(struct color c) {
+            int colors[3] = { c.red, c.green, c.blue };
+            struct color c2;
+
+            for (int i = 0; i < 3; i++) {
+                colors[i] = (int) (colors[i] / 0.7);
+            }
+
+            c2.red = colors[0];
+            c2.green = colors[1];
+            c2.blue = colors[2];
+
+            return c2;
+        }
+
+
+(10) struct point (int x, y; };
+     struct rectangle { struct point upper_left, lower_right; };
+
+     (a) (r.lower_right.x - r.upper_left.x) * (r.upper_left.y - r.lower_right.y);
+     (b) c.x = r.upper_left.x + (r.lower_right.x - r.upper_left.x) / 2;
+         c.y = r.lower_right.y + (r.upper_left.y - r.lower_right.y) / 2;
+
+     (c) r.upper_left.x +=  x;
+         r.lower_right.x += x;
+         r.upper_left.y += y;
+         r.lower_right.y +=y;
+
+     (d) return (p.x > r.upper_left.x && p.x < r.lower_right.x && p.y < r.upper_left.y && p.y > r.lower_right.y);
+
+
+(11) 20 bytes
+
+
+(12) 16 bytes
+
+
+(13) (a) s.shape_kind = RECTANGLE; // we should change our int to an ENUM like so ==> enum { RECTANGLE, CIRCLE } shape_kind;
+     (b) s.center.x = 10;
+     (c) s.height = 25; ==> s.u.rectangle.height = 25;
+     (d) s.u.rectangle.width = 8;
+     (e) s.u.circle = 5; ==> s.u.circle.radius = 5;
+     (f) s.u.radius = 5; ==> s.u.circle.radius = 5;
+
+
+(14) double compute_area (struct shape s) {
+         if (s.shape_kind == RECTANGLE) {
+             return s.u.rectangle.height * s.u.rectangle.width;
+
+         return MATH.PI * s.u.circle.radius * s.u.circle.radius;
+     }
+
+
+(15) (a) enum week_days { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY };
+     (b) typedef enum { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY } week_days;
+
+
+(16) (a) An enumeration constant may represent any integer specified by the programmer ==> TRUE
+     (b) Enumeration constants have exactly the same properties as constants created using #define ==> FALSE; enumeration constants are subject to C's scope rules, #define is not!
+     (c) Enumeration constants have the values 0, 1, 2,... by default ==> TRUE
+     (d) All constants in an enumeration must have different values ==> FALSE
+     (e) Eneumerations constants may be used as integers in expressions ==> TRUE
+
+
+(17) Remember: C treats enum variables AND constants as integers!
+     
+     (a) b = FALSE; ==> good
+     (b) b = i; ==> not good; assigning an int to an enum might result in something unmeaningful!
+     (c) b++; ==> also no great; might still work, but also might increment b too far
+     (d) i = b; ==> perfect!
+     (e) i = 2 * b + 1; ==> perfect!
+
+
+(18) (a) typedef enum { PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, EMPTY } Piece;
+         typedef enum { BLACK, WHITE } Color; 
+
+     (b) typedef struct {
+            Piece p;
+            Color c;
+         } Square;
+
+     (c) Square chess_board[8][8] = {{ ROOK, BLACK }, { KNIGHT, BLACK }, { BISHOP, BLACK }, { QUEEN, BLACK }, { KING, BLACK }, { BISHOP, BLACK }, { KNIGHT, BLACK }, { ROOK, BLACK },
+                                     { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, { PAWN, BLACK }, 
+                                     { EMPTY, BLACK }, { EMPTY, BLACK },{ EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK },
+                                     { EMPTY, BLACK }, { EMPTY, BLACK },{ EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK },
+                                     { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK },
+                                     { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK }, { EMPTY, BLACK },
+                                     { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE }, { PAWN, WHITE },
+                                     { ROOK, WHITE }, { KNIGHT, WHITE }, { BISHOP, WHITE }, { QUEEN, WHITE }, { KING, WHITE }, { BISHOP, WHITE }, { KNIGHT, WHITE }, { ROOK, WHITE}}
+
+
+(19) struct pinball_machine {
+        char name[40];
+        int year;
+        enum { EM, SS } type;
+        int players;
+     }
+
+
+(20) enum { NORTH, SOUTH, EAST, WEST } direction;
+
+     switch (direction) {
+         case NORTH: y++;
+                     break;
+         case SOUTH: y--;
+                     break;
+         case EAST:  x++;
+                     break;
+         case WEST:  x--;
+                     break;
+     }
+
+
+(21) (a) 0, 1, 2, 3
+     (b) 11, 12, 13
+     (c) 14, 15, 16, 24, 25
+     (d) 45, 46, 47, 37, 38, 39
+
+
+(22) enum chess_pieces {KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN};
+
+     (a) int piece_value[6] = {200, 9, 5, 3, 3, 1};
+     (b) int piece_value[6] = {[KING]=200, [QUEEN]=9, [ROOK]=5, [BISHOP]=3, [KNIGHT]=3, [PAWN=1]};
+
+                                
