@@ -108,7 +108,22 @@ void update() {
 }
 
 void print(void) {
-    int i;
+    int i, j, min;
+    struct part tmp;
+
+    for (i = 1; i < num_parts - 1; i++) {
+       min = i; 
+       for (j = i + 1; j < num_parts; j++) {
+            if (inventory[j].number < inventory[min].number) {
+                min = j;
+            }
+       }
+       if (min != i) {
+           tmp = inventory[i];
+           inventory[i] = inventory[min];
+           inventory[min] = tmp;
+       }
+    }
 
     printf("Part Number    Part Name                    "
            "Quantity on Hand\n");
