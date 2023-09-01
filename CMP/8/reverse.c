@@ -43,5 +43,4 @@ int main(void) {
     printf("%c\n", term);
 
     return 0;
-
 }
