@@ -51,6 +51,25 @@ struct node *add_to_list(struct node *list, int n) {
 }
 
 
+//second version uses double pointer to modify where head points
+// we point the new node's next to the current head, then we point head
+// to the new node.
+void add_to_list2(struct node **list, int n) {
+    struct node *new_node;
+
+    new_node = malloc(sizeof(struct node));
+    
+    if (new_node == NULL) {
+        printf("Error: malloc failed in add_to_list func\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_node->value = n;
+    new_node->next = *list;
+    *list = new_node;
+}
+
+
 struct node *search_list(struct node *list, int n) {
     struct node *p = NULL;
 
